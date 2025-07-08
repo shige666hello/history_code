@@ -1,0 +1,9 @@
+此为测试服务
+1、验证环境变量生效
+2、验证数据库连接（涉及vpc）:依赖层python_sql_20250414.zip
+
+
+函数配置：
+
+subdir:./python_test_source/src/code
+启动命令:gunicorn -b 0.0.0.0:8080 server:app
