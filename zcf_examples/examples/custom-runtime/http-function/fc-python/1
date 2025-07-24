@@ -1,0 +1,148 @@
+##
+# Host Database
+#
+#   localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1	localhost
+255.255.255.255	broadcasthost
+#::1             localhost
+#小安-测试环境
+10.220.168.209 test.monitorv.zyun.360.cn
+10.220.168.209 test-monitor.zyun.360.cn
+10.220.168.209 test.monitor.zyun.360.cn
+10.220.168.209 jinpeng.monitor.zyun.360.cn
+10.220.168.209 priv.monitor.zyun.360.cn
+#10.173.18.108 priv.monitor.zyun.360.cn
+#小安-回归环境
+#10.209.214.235 monitor.zyun.360.cn
+#10.209.214.235 console.aimonitor.360.cn
+#10.209.214.235 api-monitor.live.360.cn
+#小安-线上环境
+#101.199.125.36 monitor.zyun.360.cn
+10.173.45.44 priv.monitor.zyun.360.cn
+#====account回归机====
+11.123.246.26 account.vcloud.360.cn
+#====account开发机====
+#10.16.57.5  lr.account.vcloud.360.cn
+10.16.57.5 jinpeng.account.vcloud.360.cn
+10.16.57.5     dev.live.360.cn
+10.220.168.209 test.zyun.360.cn 
+10.220.168.209 test.idaas.uc.zyun.360.cn
+10.220.168.209 testlogin.zyun.qihoo.net
+#====account测试机（没有用）====
+10.16.57.5 test.account.vcloud.360.cn
+10.16.57.5 zhy.account.vcloud.360.cn
+10.16.57.5 console-dev.live.360.cn
+#10.254.21.242  test01
+#====智汇云官网回归机 ====
+#10.220.171.210 zyun.360.cn 
+#10.220.171.210 zyun.qihoo.net
+#10.220.171.210 console.zyun.qihoo.net
+#10.220.171.210 console.zyun.360.cn
+
+#10.217.63.207 uc.zyun.360.cn 
+#10.217.63.207 login.zyun.qihoo.net
+#10.209.28.12 account.vcloud.360.cn
+10.220.168.209 test.zyun.360.cn
+10.220.168.209 test.idaas.uc.zyun.360.cn 
+10.220.168.209 testlogin.zyun.qihoo.net
+
+# ==== 智汇云官网测试环境  ====
+10.16.57.5 dev.live.360.cn 
+10.16.57.5 dev.live.qihoo.net 
+10.16.57.5 zhy.live.360.cn 
+10.16.57.5 zhongshan.live.360.cn
+10.16.57.5 zhongshan.live.qihoo.net
+
+#====智汇云官网测试环境-控制台域名 ====
+10.16.57.5 console.dev.live.360.cn 
+10.16.57.5 console.dev.live.qihoo.net 
+10.16.57.5 console.zhongshan.live.360.cn
+10.16.57.5 console.zhongshan.live.qihoo.net
+
+#====函数计算 ====
+10.16.57.5 zhongshan.live.360.cn
+10.16.57.5 zhongshan.live.qihoo.net
+#10.16.57.5 lym.live.360.cn
+10.220.168.209  test-zlambda.zyun.360.cn
+#1.192.194.66 ys.ystest.360.cn
+42.236.59.37 /home/xuruidong/function/fc-dispatcher/log
+#==== 消息长连接 ====
+10.220.168.209 test-octopus.vcloud.360.cn
+
+#==== API市场 ====
+10.220.168.209 test-apimarket.zyun.360.cn
+42.236.59.37 text-thumbnail-conversion.apimarket.zyunapi.com
+42.236.59.37 smoke.apimarket.zyunapi.com
+#42.236.59.37 mps-test1.test.test-3.fc.zyunapp.com
+#42.236.59.37 unzip.apimarket.zyunapi.com
+#42.236.59.37 video-mps.apimarket.zyunapi.com
+#==== APP市场 ====
+10.16.57.5 console-dev.live.360.cn 
+10.16.57.5 console-dev.live.qihoo.net
+#====音视频质量监控回归机 ====
+#10.220.171.210 zyun.360.cn
+#10.220.171.210 zyun.qihoo.net
+#====Lite平台====
+10.173.194.143 test.lite.360.cn
+
+10.16.57.5 devmuyin.zyun.360.cn
+#====小安流水线测试域名====
+127.0.0.1 test.monitor.platform.360.cn
+#10.216.130.202 ys.monitor.360.cn
+#10.216.130.144 test.xiaoan.zyun.360.cn
+101.199.252.136 test.xiaoan.zyun.360.cn
+#101.199.252.137 test.api-xiaoan.zyun.360.cn
+#10.225.149.172 ys.monitor.360.cn
+#====易讲-测试环境 ====
+10.220.168.209 test.edu.zyun.360.cn
+10.220.168.209 test.admin-edu.zyun.360.cn
+203.208.50.33 dl.google.com
+#====videoflow-测试环境 ====
+10.220.168.209 transcode.test.live.360.cn
+#11.123.247.99 transcode.live.360.cn
+#11.123.247.177 transcode.live.360.cn
+#11.123.247.119 transcode.live.360.cn
+#10.225.0.165 transcode.live.360.cn
+#10.225.0.138 transcode.live.360.cn
+#10.225.1.70 transcode.live.360.cn
+10.220.168.209 api.transcode.360.cn
+10.224.149.110 quality.test.live.360.cn
+#==== web播放器测试 ====
+10.220.168.209 test.webplayer.360.cn
+#==== test tmp ====
+10.220.195.76 yu.webplayer.360.cn
+#==== meeting-rtc ====
+36.110.231.120  room-test.live.qihoo.net
+#========== 用户中心（用户中心debug，查看控制台log） ==========
+#10.220.168.30 s.ssl.qhimg.com s.ssl.qhmsg.com
+#====xstore==========
+10.220.145.205 beijing.xstore.qihoo.net
+#====boss==========
+10.220.168.209  test-boss.vcloud.360.cn
+10.220.168.209  test-octopus.vcloud.360.cn
+10.220.168.209  agent-octopus.vcloud.360.cn
+10.16.57.25  zzs.boss.vcloud.360.cn
+#1.192.194.66 ys.ystest.360.cn
+#10.220.132.27 ys.ystest.360.cn
+#10.187.120.13 ys.ystest.360.cn
+#10.187.120.14 ys.ystest.360.cn
+#==== tmp ====
+#10.16.57.5 test.console.muyin.360.cn
+#10.16.57.5 test.admin.xhm.360.cn
+10.220.168.209  test.webplayer.360.cn
+10.220.168.7 ylf.muyin.360.cn
+10.224.146.161 ylf.muyin.360.cn
+10.208.50.237   237.dev.live.qihoo.net
+10.16.1.111 ys.test.zbus.cn
+42.236.59.37 ystest0511-account.apimarket.zyunapi.com
+# Added by Docker Desktop
+# To allow the same kube context to work on the host and the container:
+127.0.0.1 kubernetes.docker.internal
+10.220.168.209 test.media-manager.360.cn
+10.220.168.209 test.media-live.360.cn
+10.236.118.122 lvscheck.xitong.qihoo.net
+10.225.153.124 quality.test.live.360.cn
+#10.236.162.252 ystest0516.api.zyuncs.com
+# End of section
