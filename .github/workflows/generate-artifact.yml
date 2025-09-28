@@ -34,11 +34,11 @@ jobs:
       with:
         name: build-artifacts
         path: artifacts/
-        retention-days: 7
+        retention-days: 90
         
     - name: Upload individual file
       uses: actions/upload-artifact@v4
       with:
         name: build-info
         path: artifacts/build-info.txt
-        retention-days: 7
+        retention-days: 90
