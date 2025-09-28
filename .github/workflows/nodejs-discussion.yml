@@ -1,0 +1,228 @@
+name: Node.js Discussion Demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: '要执行的操作'
+        required: true
+        default: 'demo'
+        type: choice
+        options:
+          - demo
+          - create-discussion
+          - list-discussions
+          - get-discussion-by-number
+      discussion_number:
+        description: '讨论编号 (仅在使用 get-discussion-by-number 时需要)'
+        required: false
+        type: number
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'package.json'
+      - 'index.js'
+      - 'discussion.js'
+
+jobs:
+  nodejs-discussion-demo:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Node.js Discussion Demo
+      if: github.event.inputs.action == 'demo' || github.event_name == 'push'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "🚀 运行 Node.js Discussion 演示"
+        node discussion.js
+
+    - name: Create Sample Discussion
+      if: github.event.inputs.action == 'create-discussion'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "📝 创建示例讨论"
+        node -e "
+        const { GitHubDiscussionManager } = require('./index.js');
+        const manager = new GitHubDiscussionManager(process.env.GITHUB_TOKEN, 'shige666hello', 'history_code');
+        
+        manager.getDiscussionCategories().then(categories => {
+          if (categories.length > 0) {
+            return manager.createDiscussion(
+              'GitHub Actions 创建的讨论 #' + Date.now(),
+              '这是通过 GitHub Actions Workflow 自动创建的讨论。\n\n## 自动化信息\n- 创建时间: ' + new Date().toISOString() + '\n- Workflow: Node.js Discussion Demo\n- 触发方式: workflow_dispatch\n\n## 关于 DiscussionNumber\nDiscussionNumber 是讨论的唯一标识符，可以通过 API 获取。',
+              categories[0].id
+            );
+          }
+        }).then(discussion => {
+          console.log('✅ 讨论已创建:');
+          console.log('标题:', discussion.title);
+          console.log('DiscussionNumber:', discussion.number);
+          console.log('URL:', discussion.url);
+          console.log('ID:', discussion.id);
+        }).catch(err => {
+          console.error('❌ 创建失败:', err.message);
+          process.exit(1);
+        });
+        "
+
+    - name: List Discussions
+      if: github.event.inputs.action == 'list-discussions'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "📋 列出所有讨论"
+        node -e "
+        const { GitHubDiscussionManager } = require('./index.js');
+        const manager = new GitHubDiscussionManager(process.env.GITHUB_TOKEN, 'shige666hello', 'history_code');
+        
+        manager.getDiscussions().then(discussions => {
+          console.log('📊 讨论统计:');
+          console.log('总讨论数:', discussions.length);
+          console.log('');
+          
+          if (discussions.length === 0) {
+            console.log('当前没有讨论');
+            return;
+          }
+          
+          console.log('📋 讨论列表:');
+          discussions.forEach((discussion, index) => {
+            console.log(\`\${index + 1}. #\${discussion.number} - \${discussion.title}\`);
+            console.log(\`   作者: \${discussion.author.login}\`);
+            console.log(\`   分类: \${discussion.category.name}\`);
+            console.log(\`   创建时间: \${discussion.createdAt}\`);
+            console.log('');
+          });
+        }).catch(err => {
+          console.error('❌ 获取失败:', err.message);
+          process.exit(1);
+        });
+        "
+
+    - name: Get Discussion by Number
+      if: github.event.inputs.action == 'get-discussion-by-number'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "🔍 获取讨论详情"
+        node -e "
+        const { GitHubDiscussionManager } = require('./index.js');
+        const manager = new GitHubDiscussionManager(process.env.GITHUB_TOKEN, 'shige666hello', 'history_code');
+        const discussionNumber = ${{ github.event.inputs.discussion_number || 1 }};
+        
+        console.log('获取讨论 #' + discussionNumber + ' 的详情...');
+        
+        manager.getDiscussionByNumber(discussionNumber).then(discussion => {
+          if (!discussion) {
+            console.log('❌ 未找到讨论 #' + discussionNumber);
+            return;
+          }
+          
+          console.log('✅ 讨论详情:');
+          console.log('DiscussionNumber:', discussion.number);
+          console.log('标题:', discussion.title);
+          console.log('作者:', discussion.author.login);
+          console.log('分类:', discussion.category.name);
+          console.log('创建时间:', discussion.createdAt);
+          console.log('内容预览:', discussion.body.substring(0, 200) + '...');
+          console.log('评论数:', discussion.comments.nodes.length);
+          
+          if (discussion.comments.nodes.length > 0) {
+            console.log('');
+            console.log('💬 最新评论:');
+            discussion.comments.nodes.slice(0, 5).forEach((comment, index) => {
+              console.log(\`\${index + 1}. \${comment.author.login}: \${comment.body.substring(0, 100)}...\`);
+            });
+          }
+        }).catch(err => {
+          console.error('❌ 获取失败:', err.message);
+          process.exit(1);
+        });
+        "
+
+    - name: Generate Discussion Report
+      if: always()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "📊 生成讨论报告"
+        node -e "
+        const { GitHubDiscussionManager } = require('./index.js');
+        const fs = require('fs');
+        const manager = new GitHubDiscussionManager(process.env.GITHUB_TOKEN, 'shige666hello', 'history_code');
+        
+        Promise.all([
+          manager.getDiscussionCategories(),
+          manager.getDiscussions()
+        ]).then(([categories, discussions]) => {
+          const report = {
+            timestamp: new Date().toISOString(),
+            repository: 'shige666hello/history_code',
+            categories: categories.length,
+            totalDiscussions: discussions.length,
+            discussions: discussions.map(d => ({
+              number: d.number,
+              title: d.title,
+              author: d.author.login,
+              category: d.category.name,
+              createdAt: d.createdAt
+            }))
+          };
+          
+          const reportContent = JSON.stringify(report, null, 2);
+          console.log('讨论报告:');
+          console.log(reportContent);
+          
+          // 保存报告为 artifact
+          fs.writeFileSync('discussion-report.json', reportContent);
+          console.log('报告已保存到 discussion-report.json');
+        }).catch(err => {
+          console.error('生成报告失败:', err.message);
+        });
+        "
+
+    - name: Upload Discussion Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: discussion-report
+        path: discussion-report.json
+        retention-days: 90
+
+    - name: Create Summary
+      if: always()
+      run: |
+        echo "## 📊 Node.js Discussion 演示结果" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Workflow 执行完成" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📋 操作信息" >> $GITHUB_STEP_SUMMARY
+        echo "- 操作类型: ${{ github.event.inputs.action || 'demo' }}" >> $GITHUB_STEP_SUMMARY
+        echo "- 执行时间: $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "- 仓库: shige666hello/history_code" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔧 可用的操作" >> $GITHUB_STEP_SUMMARY
+        echo "- \`demo\`: 运行完整的演示" >> $GITHUB_STEP_SUMMARY
+        echo "- \`create-discussion\`: 创建示例讨论" >> $GITHUB_STEP_SUMMARY
+        echo "- \`list-discussions\`: 列出所有讨论" >> $GITHUB_STEP_SUMMARY
+        echo "- \`get-discussion-by-number\`: 获取特定编号的讨论" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📚 DiscussionNumber 说明" >> $GITHUB_STEP_SUMMARY
+        echo "DiscussionNumber 是 GitHub Discussions 的唯一数字标识符，可以通过以下方式获取:" >> $GITHUB_STEP_SUMMARY
+        echo "- API: \`discussion.number\`" >> $GITHUB_STEP_SUMMARY
+        echo "- GraphQL: \`discussion { number }\`" >> $GITHUB_STEP_SUMMARY
+        echo "- REST API: \`GET /repos/{owner}/{repo}/discussions\`" >> $GITHUB_STEP_SUMMARY

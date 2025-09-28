@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-discussion-example",
+  "version": "1.0.0",
+  "description": "Node.js project with GitHub Discussions integration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js",
+    "build": "echo 'Building project...'",
+    "discussion": "node discussion.js"
+  },
+  "keywords": ["nodejs", "github", "discussions"],
+  "author": "shige666hello",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^20.0.2",
+    "axios": "^1.6.0"
+  }
+}
