@@ -1,0 +1,44 @@
+name: Generate Artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  generate-artifact:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Create sample artifact
+      run: |
+        mkdir -p artifacts
+        echo "Generated at $(date)" > artifacts/build-info.txt
+        echo "Repository: ${{ github.repository }}" >> artifacts/build-info.txt
+        echo "Run ID: ${{ github.run_id }}" >> artifacts/build-info.txt
+        echo "Commit: ${{ github.sha }}" >> artifacts/build-info.txt
+        echo "Branch: ${{ github.ref_name }}" >> artifacts/build-info.txt
+        echo "Actor: ${{ github.actor }}" >> artifacts/build-info.txt
+        
+    - name: Create additional files
+      run: |
+        echo "Sample data file" > artifacts/data.txt
+        echo "Configuration file" > artifacts/config.json
+        echo '{"version": "1.0.0", "timestamp": "'$(date -Iseconds)'"}' > artifacts/config.json
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: artifacts/
+        retention-days: 7
+        
+    - name: Upload individual file
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-info
+        path: artifacts/build-info.txt
+        retention-days: 7
